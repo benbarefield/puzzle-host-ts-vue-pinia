@@ -1,12 +1,16 @@
 import {computed, ref} from "vue";
 import {defineStore} from "pinia";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 export interface Puzzle {
   name: string;
   readonly id: string;
   unconfirmed?: boolean
-  lastStatus?: boolean,
-  lastStatusUpdate?: number,
+  lastGuessResult?: boolean,
+  lastGuessDate?: dayjs.Dayjs,
 }
 
 // todo: enforce name uniqueness
@@ -19,13 +23,19 @@ export const usePuzzleStore = defineStore("puzzles", () => {
     return puzzle?.name || "";
   });
 
-
   const hasPuzzleData = computed(() => (puzzleId: string) => {
     const puzzle = puzzlesStore.value.find(p => p.id == puzzleId);
     return puzzle ? !puzzle.unconfirmed : false;
   });
 
+  const lastPuzzleStatus = computed(() => (puzzleId: string) =>
+    (puzzlesStore.value.find(p => p.id == puzzleId))?.lastGuessResult);
+
+  const lastPuzzleGuess = computed(() => (puzzleId: string) =>
+    puzzlesStore.value.find(p => p.id == puzzleId)?.lastGuessDate);
+
   function setPuzzles(puzzles: Puzzle[]) {
+    console.log(puzzles);
     puzzlesStore.value = puzzles;
     loaded.value = true;
   }
@@ -50,10 +60,21 @@ export const usePuzzleStore = defineStore("puzzles", () => {
       ? p
       : {
         ...p,
-        lastStatus: status,
-        lastStatusUpdate: Date.now(),
+        lastGuessResult: status,
+        lastGuessDate: dayjs(),
       });
   }
 
-  return {puzzles:puzzlesStore, loaded, puzzleNameById, hasPuzzleData, setPuzzles, addPuzzle, confirmPuzzleWithId, puzzleQueried};
+  return {
+    puzzles:puzzlesStore,
+    loaded,
+    puzzleNameById,
+    hasPuzzleData,
+    lastPuzzleStatus,
+    lastPuzzleGuess,
+    setPuzzles,
+    addPuzzle,
+    confirmPuzzleWithId,
+    puzzleQueried,
+  };
 });

@@ -2,6 +2,7 @@
   import {type Puzzle, usePuzzleStore} from "@/stores/puzzles";
   import {storeToRefs} from "pinia";
   import {useTemplateRef} from "vue";
+  import dayjs from "dayjs";
 
   const store = usePuzzleStore();
   const {puzzles,loaded} = storeToRefs(store);
@@ -43,7 +44,11 @@
       try {
         const response = await fetch("http://localhost:8888/api/userPuzzles");
 
-        const puzzles: Puzzle[] = await response.json();
+        const puzzlesData = await response.json();
+        const puzzles: Puzzle[] = puzzlesData.map((p: {id: string, name: string, lastGuessDate?: string}) => ({
+          ...p,
+          lastGuessDate: p.lastGuessDate ? dayjs(p.lastGuessDate) : undefined,
+        }))
         store.setPuzzles(puzzles);
       }
       catch(e) {

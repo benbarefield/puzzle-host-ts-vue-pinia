@@ -36,7 +36,10 @@
   --section-gap: 160px;
 
   --color-interactable: hsla(160, 100%, 37%, 1);
-  --color-interactable-hover: hsla(160, 100%, 37%, 0.4)
+  --color-interactable-hover: hsla(160, 100%, 37%, 0.4);
+
+  --color-correct: #09bd33;
+  --color-incorrect: #f60f3b;
 }
 
 @media (prefers-color-scheme: dark) {
