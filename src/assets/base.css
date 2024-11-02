@@ -40,6 +40,8 @@
 
   --color-correct: #09bd33;
   --color-incorrect: #f60f3b;
+
+  --color-error: #cb0a0a;
 }
 
 @media (prefers-color-scheme: dark) {

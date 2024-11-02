@@ -47,8 +47,12 @@ export const usePuzzleStore = defineStore("puzzles", () => {
     });
   }
 
-  function confirmPuzzleWithId(name: string, newId: string) {
-    puzzlesStore.value = puzzlesStore.value.map(p => p.name !== name ? p : {
+  function removePuzzle(id: string) {
+    puzzlesStore.value = puzzlesStore.value.filter(p => p.id !== id);
+  }
+
+  function confirmPuzzleWithId(oldId: string, newId: string) {
+    puzzlesStore.value = puzzlesStore.value.map(p => p.id !== oldId ? p : {
       ...p,
       id: newId,
       unconfirmed: false,
@@ -72,6 +76,7 @@ export const usePuzzleStore = defineStore("puzzles", () => {
     hasPuzzleData,
     lastPuzzleStatus,
     lastPuzzleGuess,
+    removePuzzle,
     setPuzzles,
     addPuzzle,
     confirmPuzzleWithId,

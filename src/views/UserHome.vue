@@ -1,9 +1,11 @@
 <script lang="ts" setup>
   import {type Puzzle, usePuzzleStore} from "@/stores/puzzles";
   import {storeToRefs} from "pinia";
-  import {useTemplateRef} from "vue";
-  import dayjs from "dayjs";
+  import {ref, useTemplateRef} from "vue";
+  import getPuzzlesForUser from "@/api/getPuzzlesForUser";
 
+  const puzzleFetchError = ref<string | null>(null);
+  const puzzleCreationError = ref<string | null>(null);
   const store = usePuzzleStore();
   const {puzzles,loaded} = storeToRefs(store);
 
@@ -15,12 +17,14 @@
   }
 
   async function sendCreatePuzzle() {
+    puzzleCreationError.value = null;
     const name = nameRef.value?.value || "";
     dialogRef.value?.close?.(); // tests not supporting dialog element
 
+    const tempId = Math.random().toString();
     store.addPuzzle({
       name,
-      id: "0",
+      id: tempId,
     }, true);
 
     const response = await fetch("http://localhost:8888/api/puzzle", {
@@ -33,37 +37,31 @@
       }
     });
 
+    const responseText = await response.text();
     if(response.ok) {
-      const id = await response.text();
-      store.confirmPuzzleWithId(name, id);
+      store.confirmPuzzleWithId(tempId, responseText);
+    } else {
+      store.removePuzzle(tempId);
+      puzzleCreationError.value = `${response.status}: ${responseText}`;
     }
   }
 
-  if(puzzles.value.length === 0) {// when to retrieve puzzles again?
-    (async () => {
-      try {
-        const response = await fetch("http://localhost:8888/api/userPuzzles");
-
-        const puzzlesData = await response.json();
-        const puzzles: Puzzle[] = puzzlesData.map((p: {id: string, name: string, lastGuessDate?: string}) => ({
-          ...p,
-          lastGuessDate: p.lastGuessDate ? dayjs(p.lastGuessDate) : undefined,
-        }))
-        store.setPuzzles(puzzles);
-      }
-      catch(e) {
-        //todo: error handling
-        console.log(e)
-      }
-    })();
+  const getPuzzles = () => getPuzzlesForUser(store.setPuzzles, puzzleFetchError);
+  if(puzzles.value.length === 0) {
+    getPuzzles();
   }
 </script>
 
 <template>
   <section class="container">
     <h2 class="header">Your Puzzles</h2>
-    <div v-if="!loaded" class="borderedContainer">
+    <div v-if="!loaded && puzzleFetchError === null" class="borderedContainer">
       <p class="loading">loading...</p>
+    </div>
+    <div v-if="puzzleFetchError">
+      <p class="error">If you're seeing this, there has been some error in a GET call to /api/userPuzzles.</p>
+      <p class="error">{{puzzleFetchError}}</p>
+      <button :click="getPuzzles">Try again</button>
     </div>
     <ul v-if="loaded && puzzles.length > 0" class="puzzleList borderedContainer">
       <li v-for="puzzle in puzzles" class="puzzle">
@@ -72,11 +70,13 @@
       </li>
       <li>
         <button class="createPuzzle" @click="openCreateDialog">Create Puzzle</button>
+        <p v-if="puzzleCreationError !== null" class="error">Error with creation (check POST to /api/puzzle): {{puzzleCreationError}}</p>
       </li>
     </ul>
     <div v-if="loaded && puzzles.length === 0" class="borderedContainer">
       <p class="instructions">No puzzles yet! Create a puzzle to get started.</p>
       <button class="createPuzzle" @click="openCreateDialog">Create Puzzle</button>
+      <p v-if="puzzleCreationError !== null" class="error">Error with creation (check POST to /api/puzzle): {{puzzleCreationError}}</p>
     </div>
   </section>
   <dialog class="createDialog" ref="create-dialog">
@@ -90,6 +90,10 @@
 </template>
 
 <style scoped>
+  .error {
+    color: var(--color-error);
+  }
+
   .container {
     width: 50vw;
     margin: 50px auto 0 auto;
