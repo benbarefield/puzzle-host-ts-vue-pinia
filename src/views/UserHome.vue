@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-  import {type Puzzle, usePuzzleStore} from "@/stores/puzzles";
+  import {usePuzzleStore} from "@/stores/puzzles";
   import {storeToRefs} from "pinia";
   import {ref, useTemplateRef} from "vue";
   import getPuzzlesForUser from "@/api/getPuzzlesForUser";
+  import {API_LOCATION} from "@/api/constants";
 
   const puzzleFetchError = ref<string | null>(null);
   const puzzleCreationError = ref<string | null>(null);
@@ -27,7 +28,7 @@
       id: tempId,
     }, true);
 
-    const response = await fetch("http://localhost:8888/api/puzzle", {
+    const response = await fetch(API_LOCATION + "/puzzle", {
       method: "POST",
       body: JSON.stringify({
         name,
@@ -47,7 +48,7 @@
   }
 
   const getPuzzles = () => getPuzzlesForUser(store.setPuzzles, puzzleFetchError);
-  if(puzzles.value.length === 0) {
+  if(!loaded.value) {
     getPuzzles();
   }
 </script>
@@ -61,7 +62,7 @@
     <div v-if="puzzleFetchError">
       <p class="error">If you're seeing this, there has been some error in a GET call to /api/userPuzzles.</p>
       <p class="error">{{puzzleFetchError}}</p>
-      <button :click="getPuzzles">Try again</button>
+      <button @click="getPuzzles">Try again</button>
     </div>
     <ul v-if="loaded && puzzles.length > 0" class="puzzleList borderedContainer">
       <li v-for="puzzle in puzzles" class="puzzle">

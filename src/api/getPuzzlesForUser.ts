@@ -1,11 +1,12 @@
 import {type Puzzle} from "@/stores/puzzles";
 import {type Ref} from "vue";
 import dayjs from "dayjs";
+import {API_LOCATION} from "@/api/constants";
 
 export default async function(setPuzzles: (p: Puzzle[]) => void, errorString: Ref<string | null>): Promise<void> {
   errorString.value = null;
 
-  const response = await fetch("http://localhost:8888/api/userPuzzles");
+  const response = await fetch(API_LOCATION + "/userPuzzles");
   if(!response.ok) {
     const message = await response.text();
     errorString.value = `${response.status}: ${message}`;
