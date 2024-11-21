@@ -1,7 +1,7 @@
 import {computed, ref} from "vue";
 import {defineStore} from "pinia";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs/esm/index";
+import relativeTime from "dayjs/esm/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 

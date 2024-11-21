@@ -2,6 +2,7 @@
   "name": "puzzle-host-vue-pinia",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "concurrently --killOthers \"npm run dev\" \"npm explore puzzle-host-server -- npm run build && npm explore puzzle-host-server -- node ./dist/index.js mongodb://localhost/puzzle-host\"",
     "dev": "vite",

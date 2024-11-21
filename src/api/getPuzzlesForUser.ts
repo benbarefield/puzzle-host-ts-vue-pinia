@@ -1,6 +1,6 @@
 import {type Puzzle} from "@/stores/puzzles";
 import {type Ref} from "vue";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm/index";
 import {API_LOCATION} from "@/api/constants";
 
 export default async function(setPuzzles: (p: Puzzle[]) => void, errorString: Ref<string | null>): Promise<void> {

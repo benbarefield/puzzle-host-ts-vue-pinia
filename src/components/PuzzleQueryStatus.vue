@@ -2,7 +2,7 @@
   import {computed, onUnmounted, useTemplateRef} from "vue";
   import {storeToRefs} from "pinia";
   import {usePuzzleStore} from "@/stores/puzzles";
-  import dayjs from "dayjs";
+  import dayjs from "dayjs/esm/index";
 
   const props = defineProps<{
     puzzle: string
@@ -42,7 +42,7 @@
       const percent = Math.max(0, 10 - secondsSinceChange) / 10;
       const spread = percent * 20;
       const correctness = lastPuzzleStatus.value(props.puzzle) ? "correct" : "incorrect";
-      dotRef.value.style["box-shadow"] = `0 0 ${spread}px 0 var(--color-${correctness})`;
+      dotRef.value.style.setProperty("box-shadow", `0 0 ${spread}px 0 var(--color-${correctness})`);
     }
     animation = requestAnimationFrame(runAnimation);
   })();
