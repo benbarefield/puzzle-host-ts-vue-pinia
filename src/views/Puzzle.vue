@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-  import {type Puzzle, usePuzzleStore} from "@/stores/puzzles";
+  import {type Puzzle, usePuzzleStore} from "../stores/puzzles";
   import {storeToRefs} from "pinia";
-  import PuzzleAnswerList from "@/components/PuzzleAnswerList.vue";
-  import PuzzleQueryStatus from "@/components/PuzzleQueryStatus.vue";
+  import PuzzleAnswerList from "../components/PuzzleAnswerList.vue";
+  import PuzzleQueryStatus from "../components/PuzzleQueryStatus.vue";
   import dayjs from "dayjs/esm/index";
-  import {startListening, stopListening} from "@/api/puzzleQueryListener";
+  import {startListening, stopListening} from "../api/puzzleQueryListener";
   import {onUnmounted} from "vue";
-  import {API_LOCATION} from "@/api/constants";
-  import CopyButton from "@/components/CopyButton.vue";
+  import {API_LOCATION} from "../api/constants";
+  import CopyButton from "../components/CopyButton.vue";
 
   const props = defineProps<{
     id: string

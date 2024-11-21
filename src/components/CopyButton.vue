@@ -8,7 +8,7 @@
 
 <template>
   <button aria-label="copy" @click="doCopy" class="copyButton">
-    <img src="@/assets/copy_icon.svg" width="18" height="18" />
+    <img src="../assets/copy_icon.svg" width="18" height="18" />
   </button>
 </template>
 

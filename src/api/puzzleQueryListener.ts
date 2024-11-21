@@ -1,4 +1,4 @@
-import {usePuzzleStore} from "@/stores/puzzles";
+import {usePuzzleStore} from "../stores/puzzles";
 
 const sockets: {
   [key: string]: WebSocket

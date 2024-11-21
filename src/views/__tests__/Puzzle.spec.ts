@@ -6,7 +6,7 @@ import {type PuzzleAnswer} from '../../stores/puzzleAnswers'
 import PuzzleView from "../Puzzle.vue"
 import {routeConfiguration} from "../../router";
 import {createRouter, createWebHistory, type Router} from "vue-router";
-import doFetchMocking, {type FetchMockFunction} from "@/testUtil/fetchMocker";
+import doFetchMocking, {type FetchMockFunction} from "../../testUtil/fetchMocker";
 
 describe("Puzzle view", () => {
   let wrapper: VueWrapper, router: Router, fetchMock: FetchMockFunction;

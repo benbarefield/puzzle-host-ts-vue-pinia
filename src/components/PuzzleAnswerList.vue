@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {computed, ref, useTemplateRef} from "vue";
-import {usePuzzleAnswersStore} from "@/stores/puzzleAnswers";
-import {storeToRefs} from "pinia";
+  import {computed, ref, useTemplateRef} from "vue";
+  import {usePuzzleAnswersStore} from "../stores/puzzleAnswers";
+  import {storeToRefs} from "pinia";
 
   const props = defineProps<{
     puzzle: string

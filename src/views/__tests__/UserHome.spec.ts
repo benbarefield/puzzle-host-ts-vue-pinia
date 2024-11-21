@@ -5,7 +5,7 @@ import {type Puzzle} from "../../stores/puzzles";
 import UserHome from "../UserHome.vue";
 import {routeConfiguration} from "../../router";
 import {type Router, createRouter, createWebHistory} from "vue-router";
-import doFetchMocking, {type FetchMockFunction} from "@/testUtil/fetchMocker";
+import doFetchMocking, {type FetchMockFunction} from "../../testUtil/fetchMocker";
 
 describe("UserHome view", () => {
   let wrapper: VueWrapper, router: Router, fetchMock: FetchMockFunction;

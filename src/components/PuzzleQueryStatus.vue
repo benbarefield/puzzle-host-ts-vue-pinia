@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import {computed, onUnmounted, useTemplateRef} from "vue";
   import {storeToRefs} from "pinia";
-  import {usePuzzleStore} from "@/stores/puzzles";
+  import {usePuzzleStore} from "../stores/puzzles";
   import dayjs from "dayjs/esm/index";
 
   const props = defineProps<{

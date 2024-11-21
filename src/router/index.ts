@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import UserHome from "@/views/UserHome.vue";
-import Puzzle from "@/views/Puzzle.vue";
+import UserHome from "../views/UserHome.vue";
+import Puzzle from "../views/Puzzle.vue";
 
 export const routeConfiguration : RouteRecordRaw[] = [
   {

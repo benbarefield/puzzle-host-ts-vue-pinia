@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-  import {usePuzzleStore} from "@/stores/puzzles";
+  import {usePuzzleStore} from "../stores/puzzles";
   import {storeToRefs} from "pinia";
   import {ref, useTemplateRef} from "vue";
-  import getPuzzlesForUser from "@/api/getPuzzlesForUser";
-  import {API_LOCATION} from "@/api/constants";
+  import getPuzzlesForUser from "../api/getPuzzlesForUser";
+  import {API_LOCATION} from "../api/constants";
 
   const puzzleFetchError = ref<string | null>(null);
   const puzzleCreationError = ref<string | null>(null);
